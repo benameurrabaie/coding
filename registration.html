@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Animated background elements */
+    body::before {
+        content: '';
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        top: -250px;
+        right: -250px;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    body::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        bottom: -200px;
+        left: -200px;
+        animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+        z-index: 1;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .input-group label {
+        position: absolute;
+        left: 15px;
+        top: 12px;
+        color: #999;
+        font-size: 14px;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        background: white;
+        padding: 0 5px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .input-group input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        top: -10px;
+        left: 10px;
+        font-size: 12px;
+        color: #667eea;
+        font-weight: 600;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 12px;
+        cursor: pointer;
+        color: #999;
+        user-select: none;
+        font-size: 20px;
+        transition: color 0.3s ease;
+    }
+
+    .password-toggle:hover {
+        color: #667eea;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .error {
+        background: #fee;
+        color: #c33;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 20px;
+        border-left: 4px solid #c33;
+        display: none;
+        animation: shake 0.3s ease;
+    }
+
+    .error.show {
+        display: block;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+
+    .link-text {
+        text-align: center;
+        margin-top: 20px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .link-text a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .link-text a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .grid-2 .input-group {
+        margin-bottom: 0;
+    }
+
+    /* Loading state */
+    button.loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    button.loading::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin-left: -8px;
+        margin-top: -8px;
+        border: 2px solid transparent;
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding: 30px 20px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .grid-2 .input-group {
+            margin-bottom: 25px;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Create Account</h2>
+    <p class="subtitle">Join us today! Fill in your details below</p>
+    
+    <div class="error" id="error"></div>
+    
+    <div class="input-group">
+        <input type="text" id="id_student" placeholder=" " autocomplete="off">
+        <label>Student ID</label>
+    </div>
+
+    <div class="grid-2">
+        <div class="input-group">
+            <input type="text" id="name" placeholder=" " autocomplete="given-name">
+            <label>First Name</label>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="lastname" placeholder=" " autocomplete="family-name">
+            <label>Last Name</label>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <input type="date" id="birthdate" placeholder=" ">
+        <label>Date of Birth</label>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="level" placeholder=" " autocomplete="off">
+        <label>Level</label>
+    </div>
+
+    <div class="input-group">
+        <input type="password" id="password" placeholder=" " autocomplete="new-password">
+        <label>Password</label>
+        <span class="password-toggle" onclick="togglePassword('password')">👁️</span>
+    </div>
+
+    <div class="input-group">
+        <input type="password" id="confirmPassword" placeholder=" " autocomplete="new-password">
+        <label>Confirm Password</label>
+        <span class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</span>
+    </div>
+
+    <button onclick="register()">Create Account</button>
+
+    <p class="link-text">
+        Already have an account? <a href="login.html">Login here</a>
+    </p>
+</div>
+
+<script>
+const databaseURL = "https://programmation-87e30-default-rtdb.firebaseio.com/";
+
+function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    field.type = field.type === 'password' ? 'text' : 'password';
+}
+
+function showError(message) {
+    const errorDiv = document.getElementById('error');
+    errorDiv.innerText = message;
+    errorDiv.classList.add('show');
+}
+
+function hideError() {
+    const errorDiv = document.getElementById('error');
+    errorDiv.classList.remove('show');
+}
+
+function register() {
+    const id_student = document.getElementById('id_student').value.trim();
+    const name = document.getElementById('name').value.trim();
+    const lastname = document.getElementById('lastname').value.trim();
+    const birthdate = document.getElementById('birthdate').value;
+    const level = document.getElementById('level').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const btn = document.querySelector('button');
+    
+    hideError();
+
+    if (!id_student || !name || !lastname || !birthdate || !level || !password || !confirmPassword) {
+        showError("Please fill in all fields.");
+        return;
+    }
+
+    if (password.length < 6) {
+        showError("Password must be at least 6 characters long.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showError("Passwords do not match.");
+        return;
+    }
+
+    btn.classList.add('loading');
+    btn.style.position = 'relative';
+    const originalText = btn.innerText;
+    btn.innerText = '';
+
+    // Check if student already exists
+    fetch(`${databaseURL}/students/${id_student}.json`)
+    .then(res => res.json())
+    .then(existing => {
+        if (existing) {
+            showError("Student ID already exists.");
+            btn.classList.remove('loading');
+            btn.innerText = originalText;
+            return;
+        }
+        
+        const studentData = { id_student, name, lastname, birthdate, level, password };
+        return fetch(`${databaseURL}/students/${id_student}.json`, {
+            method: "PUT",
+            body: JSON.stringify(studentData)
+        });
+    })
+    .then(res => {
+        if (res && res.ok) {
+            alert("Registration successful! You can now login.");
+            window.location.href = "login.html";
+        }
+    })
+    .catch(err => {
+        showError("Error: " + err);
+        btn.classList.remove('loading');
+        btn.innerText = originalText;
+    });
+}
+
+// Allow Enter key to submit
+document.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        register();
+    }
+});
+</script>
+</body>
+</html>
