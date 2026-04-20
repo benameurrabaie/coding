@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Tenses — Complete Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d14;
+    --surface: #14141f;
+    --surface2: #1c1c2e;
+    --border: rgba(255,255,255,0.07);
+
+    --present: #7c6ff7;
+    --present-light: #c4c0fd;
+    --present-glow: rgba(124,111,247,0.18);
+    --present-bg: rgba(124,111,247,0.08);
+
+    --past: #f0826a;
+    --past-light: #fdc5b7;
+    --past-glow: rgba(240,130,106,0.18);
+    --past-bg: rgba(240,130,106,0.08);
+
+    --future: #2ec4a0;
+    --future-light: #a0ede0;
+    --future-glow: rgba(46,196,160,0.18);
+    --future-bg: rgba(46,196,160,0.08);
+
+    --text: #eeeef5;
+    --text-muted: #8888aa;
+    --text-dim: #55556a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background decoration ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 15%, rgba(124,111,247,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 90% 80%, rgba(46,196,160,0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 80% 10%, rgba(240,130,106,0.09) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--present); margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900; line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--present); }
+  .hero-sub {
+    font-size: 1rem; color: var(--text-muted);
+    max-width: 440px; margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* ── Filter bar ── */
+  .filters {
+    display: flex; justify-content: center;
+    flex-wrap: wrap; gap: 8px;
+    margin-bottom: 3rem;
+    position: relative; z-index: 1;
+  }
+  .filter-btn {
+    padding: 8px 22px; border-radius: 999px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400;
+    border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-muted);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .filter-btn.active-all { background: var(--surface2); color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .filter-btn.active-present { background: var(--present-bg); color: var(--present-light); border-color: var(--present); }
+  .filter-btn.active-past    { background: var(--past-bg);    color: var(--past-light);    border-color: var(--past); }
+  .filter-btn.active-future  { background: var(--future-bg);  color: var(--future-light);  border-color: var(--future); }
+
+  /* ── Group sections ── */
+  .section {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto 4rem;
+    padding: 0 2rem;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 1.5rem;
+  }
+  .section-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700;
+  }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .section-count {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+    color: var(--text-dim);
+  }
+
+  .present .section-dot { background: var(--present); box-shadow: 0 0 10px var(--present); }
+  .present .section-title { color: var(--present-light); }
+  .past    .section-dot { background: var(--past);    box-shadow: 0 0 10px var(--past); }
+  .past    .section-title { color: var(--past-light); }
+  .future  .section-dot { background: var(--future);  box-shadow: 0 0 10px var(--future); }
+  .future  .section-title { color: var(--future-light); }
+
+  /* ── Grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); }
+
+  .present .card:hover { box-shadow: 0 8px 32px var(--present-glow); border-color: rgba(124,111,247,0.3); }
+  .past    .card:hover { box-shadow: 0 8px 32px var(--past-glow);    border-color: rgba(240,130,106,0.3); }
+  .future  .card:hover { box-shadow: 0 8px 32px var(--future-glow);  border-color: rgba(46,196,160,0.3); }
+
+  .card-top {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px; font-weight: 500;
+    color: var(--text);
+  }
+  .card-badge {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.06em;
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .present .card-badge { background: var(--present-bg); color: var(--present-light); }
+  .past    .card-badge { background: var(--past-bg);    color: var(--past-light); }
+  .future  .card-badge { background: var(--future-bg);  color: var(--future-light); }
+
+  .card-keywords {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .kw-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+  .kw-tag {
+    font-size: 10.5px; padding: 2px 8px; border-radius: 5px;
+    background: var(--surface2); color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .card-examples { padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .example { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
+
+  .present .example strong { color: var(--present-light); font-weight: 500; }
+  .past    .example strong { color: var(--past-light);    font-weight: 500; }
+  .future  .example strong { color: var(--future-light);  font-weight: 500; }
+
+  /* ── Color accent strip on card left ── */
+  .card { border-left-width: 3px; }
+  .present .card { border-left-color: var(--present); }
+  .past    .card { border-left-color: var(--past); }
+  .future  .card { border-left-color: var(--future); }
+
+  /* ── Footer ── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 3rem 2rem;
+    color: var(--text-dim); font-size: 12px;
+    border-top: 1px solid var(--border);
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  /* ── Hidden ── */
+  .hidden { display: none !important; }
+
+  /* ── Scroll animation ── */
+  .section { opacity: 0; transform: translateY(24px); animation: fadein 0.6s ease forwards; }
+  .section:nth-child(1) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.25s; }
+  .section:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes fadein { to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-eyebrow">Grammar Reference</p>
+  <h1>English <span>Tenses</span></h1>
+  <p class="hero-sub">All 12 tenses at a glance — with indicators and examples to guide you.</p>
+</div>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active-all" data-filter="all">All tenses</button>
+  <button class="filter-btn" data-filter="present">Present</button>
+  <button class="filter-btn" data-filter="past">Past</button>
+  <button class="filter-btn" data-filter="future">Future</button>
+</div>
+
+<div id="content"></div>
+
+<footer>12 tenses &nbsp;·&nbsp; English Grammar Reference &nbsp;·&nbsp; 2025</footer>
+
+<script>
+const data = {
+  present: {
+    label: "Present",
+    tenses: [
+      { name: "Present Simple", badge: "Simple", indicators: ["always","usually","every day"],
+        examples: ["She <strong>works</strong> every day.","I <strong>eat</strong> breakfast at 8.","They <strong>play</strong> football on Sundays.","He <strong>lives</strong> in Paris.","We <strong>study</strong> English often."] },
+      { name: "Present Continuous", badge: "Continuous", indicators: ["now","at the moment"],
+        examples: ["She <strong>is working</strong> now.","I <strong>am eating</strong> at the moment.","They <strong>are playing</strong> outside.","He <strong>is reading</strong> a book.","We <strong>are studying</strong> right now."] },
+      { name: "Present Perfect", badge: "Perfect", indicators: ["already","just","yet"],
+        examples: ["She <strong>has finished</strong> her work.","I <strong>have eaten</strong> already.","They <strong>have gone</strong> home.","He <strong>has seen</strong> that movie.","We <strong>have completed</strong> the task."] },
+      { name: "Present Perfect Continuous", badge: "Perf. Cont.", indicators: ["for","since"],
+        examples: ["She <strong>has been working</strong> for 2 hours.","I <strong>have been eating</strong> since noon.","They <strong>have been playing</strong> all day.","He <strong>has been reading</strong> for a while.","We <strong>have been studying</strong> since morning."] },
+    ]
+  },
+  past: {
+    label: "Past",
+    tenses: [
+      { name: "Past Simple", badge: "Simple", indicators: ["yesterday","ago","last week"],
+        examples: ["She <strong>worked</strong> yesterday.","I <strong>ate</strong> lunch an hour ago.","They <strong>played</strong> football last week.","He <strong>read</strong> that book.","We <strong>studied</strong> last night."] },
+      { name: "Past Continuous", badge: "Continuous", indicators: ["while","when"],
+        examples: ["She <strong>was working</strong> when I called.","I <strong>was eating</strong> when he arrived.","They <strong>were playing</strong> while it rained.","He <strong>was reading</strong> at 9 PM.","We <strong>were studying</strong> all evening."] },
+      { name: "Past Perfect", badge: "Perfect", indicators: ["before","after","by the time"],
+        examples: ["She <strong>had finished</strong> before I came.","I <strong>had eaten</strong> before the meeting.","They <strong>had left</strong> already.","He <strong>had read</strong> the book before class.","We <strong>had studied</strong> before the exam."] },
+      { name: "Past Perfect Continuous", badge: "Perf. Cont.", indicators: ["for","since"],
+        examples: ["She <strong>had been working</strong> for hours.","I <strong>had been eating</strong> before you arrived.","They <strong>had been playing</strong> all day.","He <strong>had been reading</strong> for two hours.","We <strong>had been studying</strong> before the test."] },
+    ]
+  },
+  future: {
+    label: "Future",
+    tenses: [
+      { name: "Future Simple", badge: "Simple", indicators: ["tomorrow","next week"],
+        examples: ["She <strong>will work</strong> tomorrow.","I <strong>will eat</strong> later.","They <strong>will play</strong> next week.","He <strong>will read</strong> the book.","We <strong>will study</strong> tonight."] },
+      { name: "Future Continuous", badge: "Continuous", indicators: ["at this time tomorrow"],
+        examples: ["She <strong>will be working</strong> at 5 PM.","I <strong>will be eating</strong> then.","They <strong>will be playing</strong> tomorrow afternoon.","He <strong>will be reading</strong> tonight.","We <strong>will be studying</strong> later."] },
+      { name: "Future Perfect", badge: "Perfect", indicators: ["by tomorrow","by the time"],
+        examples: ["She <strong>will have finished</strong> by tomorrow.","I <strong>will have eaten</strong> by noon.","They <strong>will have left</strong> by then.","He <strong>will have read</strong> the book.","We <strong>will have studied</strong> before the exam."] },
+      { name: "Future Perfect Continuous", badge: "Perf. Cont.", indicators: ["for","by the time"],
+        examples: ["She <strong>will have been working</strong> for 5 hours.","I <strong>will have been eating</strong> for a while.","They <strong>will have been playing</strong> all day.","He <strong>will have been reading</strong> for 2 hours.","We <strong>will have been studying</strong> for days."] },
+    ]
+  }
+};
+
+function buildCard(t) {
+  return `<div class="card">
+    <div class="card-top">
+      <span class="card-name">${t.name}</span>
+      <span class="card-badge">${t.badge}</span>
+    </div>
+    <div class="card-keywords">
+      <span class="kw-label">Keywords</span>
+      ${t.indicators.map(k => `<span class="kw-tag">${k}</span>`).join('')}
+    </div>
+    <div class="card-examples">
+      ${t.examples.map(e => `<p class="example">${e}</p>`).join('')}
+    </div>
+  </div>`;
+}
+
+function buildSection(group, info) {
+  return `<div class="section ${group}" data-group="${group}">
+    <div class="section-header">
+      <div class="section-dot"></div>
+      <h2 class="section-title">${info.label} Tenses</h2>
+      <div class="section-line"></div>
+      <span class="section-count">${info.tenses.length} tenses</span>
+    </div>
+    <div class="cards-grid">
+      ${info.tenses.map(buildCard).join('')}
+    </div>
+  </div>`;
+}
+
+const content = document.getElementById('content');
+content.innerHTML = Object.entries(data).map(([g, i]) => buildSection(g, i)).join('');
+
+const filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const f = btn.dataset.filter;
+    filterBtns.forEach(b => b.className = 'filter-btn');
+    btn.className = `filter-btn active-${f}`;
+    document.querySelectorAll('.section').forEach(s => {
+      s.classList.toggle('hidden', f !== 'all' && s.dataset.group !== f);
+    });
+  });
+});
+</script>
+</body>
+</html>
